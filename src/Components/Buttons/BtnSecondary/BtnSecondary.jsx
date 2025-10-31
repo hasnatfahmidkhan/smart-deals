@@ -4,7 +4,7 @@ const BtnSecondary = ({ children, to, className }) => {
   return (
     <Link
       to={`${to}`}
-      className={`btn font-semibold px-7 text-[#632ee3] border border-[#632ee3] rounded-md bg-white  ${className}`}
+      className={`btn font-semibold px-7 text-[#632ee3] border border-[#632ee3] rounded-md bg-transparent ${className}`}
     >
       {children}
     </Link>
