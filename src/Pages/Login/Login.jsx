@@ -1,16 +1,40 @@
-import { Link } from "react-router";
+import { Link, Navigate, useLocation, useNavigate } from "react-router";
 import BtnPrimary from "../../Components/Buttons/BtnPrimary/BtnPrimary";
 import { IoMdEyeOff } from "react-icons/io";
 import MyInput from "../../Components/MyInput/MyInput";
 import MyLabel from "../../Components/MyLabel/MyLabel";
-import { useState } from "react";
+import { use, useState } from "react";
 import { IoEye } from "react-icons/io5";
+import { AuthContext } from "../../Context/AuthContext/AuthContext";
 
 const Login = () => {
   const [showPass, setShowPass] = useState(false);
+  const { user } = use(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { signInWithGoogleFunc, setUser, setAuthloading } = use(AuthContext);
 
+  if (user) {
+    return <Navigate to={"/"} />;
+  }
+
+  // login using email password
   const handleEmailPasswordLogin = (e) => {
     console.log(e);
+  };
+
+  // google login
+  const handleLoginWithGoogle = () => {
+    signInWithGoogleFunc()
+      .then((result) => {
+        setAuthloading(false);
+        const currentUser = result.user;
+        setUser(currentUser);
+        navigate(location.state || "/");
+      })
+      .then((err) => {
+        alert(err.message);
+      });
   };
   return (
     <div className="hero h-[calc(100vh-160px)]">
@@ -65,7 +89,11 @@ const Login = () => {
             </BtnPrimary>
             <div className="divider text-base font-semibold">OR</div>
             {/* Google */}
-            <button className="btn bg-white text-black border-[#e5e5e5]">
+            <button
+              type="button"
+              onClick={handleLoginWithGoogle}
+              className="btn bg-white text-black border-[#e5e5e5]"
+            >
               <svg
                 aria-label="Google logo"
                 width="16"
