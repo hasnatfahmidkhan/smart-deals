@@ -12,7 +12,13 @@ const Login = () => {
   const { user } = use(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
-  const { signInWithGoogleFunc, setUser, setAuthloading } = use(AuthContext);
+
+  const {
+    signInWithGoogleFunc,
+    setUser,
+    setAuthloading,
+    signInWithEmailPassFunc,
+  } = use(AuthContext);
 
   if (user) {
     return <Navigate to={"/"} />;
@@ -20,7 +26,18 @@ const Login = () => {
 
   // login using email password
   const handleEmailPasswordLogin = (e) => {
-    console.log(e);
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    signInWithEmailPassFunc(email, password)
+      .then((result) => {
+        setAuthloading(false);
+        const currentUser = result.user;
+        setUser(currentUser);
+        navigate(location.state || "/");
+      })
+      .then((err) => {
+        alert(err.message);
+      });
   };
 
   // google login
@@ -53,12 +70,16 @@ const Login = () => {
             </Link>
           </p>
         </div>
-        <form>
+        <form onSubmit={handleEmailPasswordLogin}>
           <fieldset className="fieldset flex flex-col gap-3 ">
             {/* Email  */}
             <div className="space-y-1.5">
               <MyLabel>Email</MyLabel>{" "}
-              <MyInput type={"email"} placeholder={"Enter your email"} />
+              <MyInput
+                type={"email"}
+                placeholder={"Enter your email"}
+                name="email"
+              />
             </div>
 
             {/* Password  */}
@@ -69,6 +90,7 @@ const Login = () => {
                   <MyInput
                     type={showPass ? "text" : "password"}
                     placeholder="**********"
+                    name={"password"}
                   />
                   <span
                     onClick={() => setShowPass(!showPass)}
