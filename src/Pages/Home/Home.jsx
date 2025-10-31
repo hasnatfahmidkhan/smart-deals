@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <section>
       <Banner />;
-      <Container className={"mt-10"}>
+      <Container className={"md:mt-10"}>
         <h3 className="text-center text-3xl md:text-5xl font-bold mb-7">
           Recent{" "}
           <span

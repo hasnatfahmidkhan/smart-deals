@@ -15,7 +15,12 @@ const ProductCard = ({ product }) => {
           $ {product.price_min}- {product.price_max}
         </p>
         <div className="card-actions mt-2">
-          <BtnSecondary className={"w-full"}>View Details</BtnSecondary>
+          <BtnSecondary
+            to={`/product-details/${product._id}`}
+            className={"w-full"}
+          >
+            View Details
+          </BtnSecondary>
         </div>
       </div>
     </div>

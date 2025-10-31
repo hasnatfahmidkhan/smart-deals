@@ -24,3 +24,5 @@
 nav a.active {
   @apply underline text-[#632ee3] underline-offset-6;
 }
+
+
