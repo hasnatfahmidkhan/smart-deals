@@ -6,7 +6,7 @@ import BtnSecondary from "../../Components/Buttons/BtnSecondary/BtnSecondary";
 
 const Banner = () => {
     return (
-        <section className="relative bg-linear-to-br from-[#FFE6FD] to-[#E0F8F5] w-full h-[450px] md:h-[500px] lg:h-[550px] ">
+        <div className="relative bg-linear-to-br from-[#FFE6FD] to-[#E0F8F5] w-full h-[450px] md:h-[500px] lg:h-[550px] ">
       <img
         className="absolute left-0 top-0 hidden md:inline-block"
         src={leftbg}
@@ -63,7 +63,7 @@ const Banner = () => {
           </BtnSecondary>
         </div>
       </div>
-    </section>
+    </div>
     );
 };
 
