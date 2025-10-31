@@ -1,0 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: light --default;
+}
+
+/* theme  */
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --gradient-primary: linear-gradient(to right bottom, #632ee3, #9f62f2);
+  --color-primary: #000000;
+  --color-secondary: #001931;
+  --color-text-accent-content: #00193180;
+  --color-base-200: #f5f5f5;
+  --color-base-300: #e9e9e9;
+}
+
+* {
+  font-family: "Inter", sans-serif;
+}
