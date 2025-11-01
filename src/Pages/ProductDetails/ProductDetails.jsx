@@ -1,4 +1,4 @@
-import { use, useRef } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import Container from "../../Components/Container/Container";
 import { useLoaderData, useNavigate } from "react-router";
 import { FiArrowLeft } from "react-icons/fi";
@@ -8,10 +8,10 @@ import BtnPrimary from "../../Components/Buttons/BtnPrimary/BtnPrimary";
 import { AuthContext } from "../../Context/AuthContext/AuthContext";
 const ProductDetails = () => {
   const { user } = use(AuthContext);
+  const [bids, setBids] = useState([]);
   const { data: product } = useLoaderData();
   const navigate = useNavigate();
   const bidModalRef = useRef();
-  console.log(product);
 
   const {
     seller_contact,
@@ -36,8 +36,39 @@ const ProductDetails = () => {
     e.preventDefault();
     const bidPrice = e.target.bidPrice.value;
     const contactInfo = e.target.contactInfo.value;
-    console.log(bidPrice, contactInfo);
+    const newBid = {
+      product: _id,
+      buyer_image: user?.photoURL,
+      buyer_name: user?.displayName,
+      buyer_contact: contactInfo,
+      buyer_email: user?.email,
+      bid_price: bidPrice,
+      status: "pending",
+    };
+
+    fetch("http://localhost:3000/bids", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(newBid),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("After new bid", data);
+        if (data.insertedId) {
+          newBid._id = data.insertedId;
+          setBids([...bids, newBid]);
+          bidModalRef.current.close();
+        }
+      });
   };
+
+  useEffect(() => {
+    fetch(`http://localhost:3000/bids/byProduct/${_id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setBids(data);
+      });
+  }, [_id]);
 
   return (
     <Container className={"my-10"}>
@@ -154,7 +185,9 @@ const ProductDetails = () => {
         {/* Bid MODAL  */}
         <dialog ref={bidModalRef} className="modal">
           <div className="modal-box">
-            <h3 className="font-bold text-2xl text-center mt-3 mb-5">Give Seller your Offer Price</h3>
+            <h3 className="font-bold text-2xl text-center mt-3 mb-5">
+              Give Seller your Offer Price
+            </h3>
 
             <form onSubmit={handleBidSubmit}>
               <fieldset className="fieldset space-y-3">
@@ -236,6 +269,84 @@ const ProductDetails = () => {
           </div>
         </dialog>
       </div>
+
+      {/* Bids for this product  */}
+      {bids.length > 0 && (
+        <div className="md:mt-30">
+          <h2 className="capitalize md:text-5xl font-bold tracking-wide">
+            Bids for this product:{" "}
+            <span
+              style={{ backgroundImage: "var(--gradient-primary)" }}
+              className="bg-clip-text text-transparent"
+            >
+              {bids.length}
+            </span>
+          </h2>
+
+          {/* Table  */}
+          <div className="overflow-x-auto mt-10">
+            <table className="table">
+              {/* head */}
+              <thead>
+                <tr>
+                  <th>SL NO</th>
+                  <th>Product</th>
+                  <th>Seller</th>
+                  <th>Bid Price</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {bids.map((bid, index) => (
+                  <tr key={bid._id} className="">
+                    <td className="font-semibold">{index + 1}</td>
+                    {/* product  */}
+                    <td>
+                      <div className="flex items-center gap-3">
+                        <div className="avatar">
+                          <div className="rounded-md h-8 w-12">
+                            <img src={image} alt={title} />
+                          </div>
+                        </div>
+                        <div>
+                          <div className="font-bold">{title}</div>
+                          <div className="text-sm opacity-50">
+                            ${price_min}-{price_max}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    {/* seller info  */}
+                    <td>
+                      <div className="flex items-center gap-3">
+                        <div className="avatar">
+                          <div className="rounded-full h-10 w-10">
+                            <img src={sellerimg} alt={seller_name} />
+                          </div>
+                        </div>
+                        <div>
+                          <div className="font-bold">{seller_name}</div>
+                          <div className="text-sm opacity-50">{email}</div>
+                        </div>
+                      </div>
+                    </td>
+                    {/* bid price  */}
+                    <td className="font-semibold">${bid.bid_price}</td>
+                    <td className="space-x-3">
+                      <button className="btn btn-outline btn-sm btn-success">
+                        Accept Offer
+                      </button>
+                      <button className="btn btn-outline btn-sm btn-error">
+                        Reject Offer
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </Container>
   );
 };
