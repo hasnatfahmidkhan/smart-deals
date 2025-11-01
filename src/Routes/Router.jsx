@@ -8,6 +8,7 @@ import ProductDetails from "../Pages/ProductDetails/ProductDetails";
 import axios from "axios";
 import CreateProduct from "../Pages/CreateProduct/CreateProduct";
 import PrivateRoutes from "./PrivateRoutes/PrivateRoutes";
+import MyBids from "../Pages/MyBids/MyBids";
 
 const router = createBrowserRouter([
   {
@@ -41,8 +42,20 @@ const router = createBrowserRouter([
         Component: AllProducts,
       },
       {
+        path: "/my-bids",
+        element: (
+          <PrivateRoutes>
+            <MyBids />
+          </PrivateRoutes>
+        ),
+      },
+      {
         path: "/create-product",
-        Component: CreateProduct,
+        element: (
+          <PrivateRoutes>
+            <CreateProduct />
+          </PrivateRoutes>
+        ),
       },
     ],
   },

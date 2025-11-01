@@ -56,7 +56,10 @@ const ProductDetails = () => {
         console.log("After new bid", data);
         if (data.insertedId) {
           newBid._id = data.insertedId;
-          setBids([...bids, newBid]);
+          const newBids = [...bids, newBid].sort(
+            (a, b) => b.bid_price - a.bid_price
+          );
+          setBids(newBids);
           bidModalRef.current.close();
         }
       });

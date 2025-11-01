@@ -21,18 +21,18 @@ const Navbar = () => {
         <NavLink to={"/"}>Home</NavLink>
       </li>
       <li>
-        <NavLink to={"all-products"}>All Products</NavLink>
+        <NavLink to={"/all-products"}>All Products</NavLink>
       </li>
       {user && (
         <>
           <li>
-            <NavLink to={"my-products"}>My Products</NavLink>
+            <NavLink to={"/my-products"}>My Products</NavLink>
           </li>
           <li>
-            <NavLink to={"my-bids"}>My Bids</NavLink>
+            <NavLink to={"/my-bids"}>My Bids</NavLink>
           </li>
           <li>
-            <NavLink to={"create-product"}>Create Product</NavLink>
+            <NavLink to={"/create-product"}>Create Product</NavLink>
           </li>
         </>
       )}
