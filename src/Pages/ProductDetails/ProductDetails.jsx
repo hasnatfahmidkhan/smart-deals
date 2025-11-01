@@ -3,7 +3,6 @@ import Container from "../../Components/Container/Container";
 import { useLoaderData, useNavigate } from "react-router";
 import { FiArrowLeft } from "react-icons/fi";
 import { format } from "date-fns";
-import sellerimg from "../../assets/thumbnail-row.png";
 import BtnPrimary from "../../Components/Buttons/BtnPrimary/BtnPrimary";
 import { AuthContext } from "../../Context/AuthContext/AuthContext";
 const ProductDetails = () => {
@@ -158,7 +157,11 @@ const ProductDetails = () => {
           <div className="py-6 px-5 bg-white rounded-md shadow-md space-y-4">
             <p className="text-xl font-semibold">Seller Information</p>
             <div className="flex items-center gap-5">
-              <img className="w-12 h-12 rounded-full" src={sellerimg} alt="" />
+              <img
+                className="w-12 h-12 rounded-full"
+                src={seller_image}
+                alt={seller_name}
+              />
               <div className="text-sm space-y-1">
                 <p>{seller_name}</p>
                 <p>{email}</p>
@@ -324,7 +327,7 @@ const ProductDetails = () => {
                       <div className="flex items-center gap-3">
                         <div className="avatar">
                           <div className="rounded-full h-10 w-10">
-                            <img src={sellerimg} alt={seller_name} />
+                            <img src={seller_image} alt={seller_name} />
                           </div>
                         </div>
                         <div>

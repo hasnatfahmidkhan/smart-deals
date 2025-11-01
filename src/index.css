@@ -10,7 +10,6 @@
   name: "light";
   default: true;
   --gradient-primary: linear-gradient(to right bottom, #632ee3, #9f62f2);
-  --color-primary: #000000;
   --color-secondary: #001931;
   --color-accent-content: #747f8a;
   --color-base-200: #f5f5f5;
