@@ -1,7 +1,6 @@
 import React, { use, useEffect, useState } from "react";
 import Container from "../../Components/Container/Container";
 import { AuthContext } from "../../Context/AuthContext/AuthContext";
-import sellerimg from "../../assets/thumbnail-row.png";
 import Swal from "sweetalert2";
 
 const MyBids = () => {
