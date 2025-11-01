@@ -1,10 +1,13 @@
 import BtnSecondary from "../../Components/Buttons/BtnSecondary/BtnSecondary";
-import productImg from "../../assets/thumbnail-card.png";
 const ProductCard = ({ product }) => {
   return (
     <div className="card bg-base-100 shadow-sm p-4 space-y-4">
       <figure>
-        <img src={productImg} alt="Shoes" className="rounded-md" />
+        <img
+          src={product.image}
+          alt={product.title}
+          className="rounded-md h-56 w-full object-cover"
+        />
       </figure>
       <div className="card-body p-0">
         <h2 className="card-title">{product.title}</h2>

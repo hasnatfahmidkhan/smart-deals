@@ -6,6 +6,8 @@ import Register from "../Pages/Register/Register";
 import AllProducts from "../Pages/AllProducts/AllProducts";
 import ProductDetails from "../Pages/ProductDetails/ProductDetails";
 import axios from "axios";
+import CreateProduct from "../Pages/CreateProduct/CreateProduct";
+import PrivateRoutes from "./PrivateRoutes/PrivateRoutes";
 
 const router = createBrowserRouter([
   {
@@ -26,13 +28,21 @@ const router = createBrowserRouter([
       },
       {
         path: "/product-details/:id",
-        Component: ProductDetails,
+        element: (
+          <PrivateRoutes>
+            <ProductDetails />
+          </PrivateRoutes>
+        ),
         loader: ({ params }) =>
-          axios.get(`http://localhost:3000/products/${params.id}`)
+          axios.get(`http://localhost:3000/products/${params.id}`),
       },
       {
         path: "/all-products",
         Component: AllProducts,
+      },
+      {
+        path: "/create-product",
+        Component: CreateProduct,
       },
     ],
   },

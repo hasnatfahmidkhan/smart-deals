@@ -1,31 +1,18 @@
-import React from "react";
+import { use, useRef } from "react";
 import Container from "../../Components/Container/Container";
 import { useLoaderData, useNavigate } from "react-router";
-import productImg from "../../assets/thumbnail-details.png";
 import { FiArrowLeft } from "react-icons/fi";
 import { format } from "date-fns";
 import sellerimg from "../../assets/thumbnail-row.png";
 import BtnPrimary from "../../Components/Buttons/BtnPrimary/BtnPrimary";
+import { AuthContext } from "../../Context/AuthContext/AuthContext";
 const ProductDetails = () => {
+  const { user } = use(AuthContext);
   const { data: product } = useLoaderData();
   const navigate = useNavigate();
+  const bidModalRef = useRef();
   console.log(product);
-  //   {"_id":{"$oid":"6904bf12ac31646ca5c517b5"},
-  // "title":"iPhone 13 Pro Max",
-  // "price_min":{"$numberInt":"850"},
-  // "price_max":{"$numberInt":"950"},
-  // "email":"ahmedseller@gmail.com",
-  // "category":"Electronics",
-  // "created_at":"2025-10-25T14:32:00Z",
-  // "image":"https://example.com/images/iphone13promax.jpg",
-  // "status":"pending",
-  // "location":"Dhaka",
-  // "seller_image":"https://example.com/sellers/ahmed.jpg",
-  // "seller_name":"Ahmed Rahman",
-  // "condition":"used",
-  // "usage":"8 months old",
-  // "description":"iPhone 13 Pro Max 256GB, perfect condition, battery health 96%.",
-  // "seller_contact":"+8801712345678"}
+
   const {
     seller_contact,
     seller_name,
@@ -44,12 +31,24 @@ const ProductDetails = () => {
     created_at,
     seller_image,
   } = product;
+
+  const handleBidSubmit = (e) => {
+    e.preventDefault();
+    const bidPrice = e.target.bidPrice.value;
+    const contactInfo = e.target.contactInfo.value;
+    console.log(bidPrice, contactInfo);
+  };
+
   return (
     <Container className={"my-10"}>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
         <div className="flex flex-col justify-center gap-7">
           <div>
-            <img className="w-full max-h-[800px]" src={productImg} alt="" />
+            <img
+              className="w-full h-[300px] md:h-[500px] object-cover rounded-lg"
+              src={image}
+              alt=""
+            />
           </div>
           <div className="bg-white py-6 px-5 rounded-md">
             <div className="space-y-7">
@@ -146,27 +145,96 @@ const ProductDetails = () => {
           </div>
           {/* buy btn  */}
           <BtnPrimary
-            onClick={() => document.getElementById("bidModal").showModal()}
+            onClick={() => bidModalRef.current.showModal()}
             className={"py-6.5"}
           >
             I want to Buy This Product
           </BtnPrimary>
-          {/* modal  */}
-          <dialog id="bidModal" className="modal">
-            <div className="modal-box">
-              <h3 className="font-bold text-lg">Hello!</h3>
-              <p className="py-4">
-                Press ESC key or click the button below to close
-              </p>
-              <div className="modal-action">
-                <form method="dialog">
-                  {/* if there is a button in form, it will close the modal */}
-                  <button className="btn">Close</button>
-                </form>
-              </div>
-            </div>
-          </dialog>
         </div>
+        {/* Bid MODAL  */}
+        <dialog ref={bidModalRef} className="modal">
+          <div className="modal-box">
+            <h3 className="font-bold text-2xl text-center mt-3 mb-5">Give Seller your Offer Price</h3>
+
+            <form onSubmit={handleBidSubmit}>
+              <fieldset className="fieldset space-y-3">
+                <div className="flex items-center gap-3">
+                  <div>
+                    <label className="label">Buyer Name</label>
+                    <input
+                      type="text"
+                      defaultValue={user?.displayName}
+                      readOnly
+                      className="input focus:outline-none focus:border-[#632ee3]"
+                      placeholder="Your Name"
+                      name="name"
+                    />
+                  </div>
+                  <div>
+                    <label className="label">Buyer Email</label>
+                    <input
+                      defaultValue={user?.email}
+                      readOnly
+                      type="email"
+                      className="input focus:outline-none focus:border-[#632ee3]"
+                      placeholder="Your Email"
+                      name="email"
+                    />
+                  </div>
+                </div>
+
+                {/* image  */}
+                <div>
+                  <label className="label">Buyer Image URL</label>
+                  <input
+                    type="text"
+                    defaultValue={user?.photoURL}
+                    readOnly
+                    className="input w-full focus:outline-none focus:border-[#632ee3]"
+                    placeholder="https://...your_img_url"
+                  />
+                </div>
+
+                {/* price  */}
+                <div>
+                  <label className="label">Place Your Price</label>
+                  <input
+                    type="text"
+                    name="bidPrice"
+                    className="input w-full focus:outline-none focus:border-[#632ee3]"
+                    placeholder="Place Your Price"
+                  />
+                </div>
+                {/* contact info  */}
+                <div>
+                  <label className="label">Contact info</label>
+                  <input
+                    name="contactInfo"
+                    type="text"
+                    className="input w-full focus:outline-none focus:border-[#632ee3]"
+                    placeholder="Your Contact Info"
+                  />
+                </div>
+                <div className="justify-self-end space-x-3 mt-4">
+                  <button
+                    onClick={() => bidModalRef.current.close()}
+                    type="button"
+                    className="btn font-semibold px-7 text-[#632ee3] border border-[#632ee3] rounded-md bg-transparent"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    style={{ background: "var(--gradient-primary)" }}
+                    className="btn rounded-md text-white"
+                  >
+                    Submit Bid
+                  </button>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+        </dialog>
       </div>
     </Container>
   );
