@@ -57,7 +57,7 @@ const MyBids = () => {
           style={{ backgroundImage: "var(--gradient-primary)" }}
           className="bg-clip-text text-transparent"
         >
-          {10}
+          {bids.length}
         </span>
       </h3>
 

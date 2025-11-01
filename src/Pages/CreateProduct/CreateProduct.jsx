@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { FiArrowLeft } from "react-icons/fi";
 import { useNavigate } from "react-router";
 import Container from "../../Components/Container/Container";
 import Swal from "sweetalert2";
+import { AuthContext } from "../../Context/AuthContext/AuthContext";
 
 const CreateProduct = () => {
+  const { user } = use(AuthContext);
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
 
@@ -111,6 +113,7 @@ const CreateProduct = () => {
                     className="input focus:outline-none focus:border-[#632ee3] w-full"
                     placeholder="Your Product Title"
                     name="title"
+                    required
                   />
                 </div>
                 {/* Select category  */}
@@ -143,6 +146,7 @@ const CreateProduct = () => {
                     type="text"
                     className="input focus:outline-none focus:border-[#632ee3] w-full"
                     placeholder="Your Product Min Price"
+                    required
                     name="price_min"
                   />
                 </div>
@@ -167,6 +171,7 @@ const CreateProduct = () => {
                     <div className="flex items-center gap-2">
                       <label className="label cursor-pointer font-semibold text-black">
                         <input
+                          required
                           type="radio"
                           name="pCondition"
                           className="radio radio-primary"
@@ -180,6 +185,7 @@ const CreateProduct = () => {
                       <label className="label cursor-pointer font-semibold text-black">
                         <input
                           type="radio"
+                          required
                           name="pCondition"
                           className="radio radio-primary"
                           defaultValue={"Used"}
@@ -192,6 +198,7 @@ const CreateProduct = () => {
                 <div className="w-full md:w-1/2">
                   <label className="label">Product Usage Time</label>
                   <input
+                    required
                     type="text"
                     className="input focus:outline-none focus:border-[#632ee3] w-full"
                     placeholder="Your Product Usage Time"
@@ -204,6 +211,7 @@ const CreateProduct = () => {
               <div>
                 <label className="label">Your Product Image URL</label>
                 <input
+                  required
                   type="text"
                   name="pImage"
                   className="input w-full focus:outline-none focus:border-[#632ee3]"
@@ -220,6 +228,8 @@ const CreateProduct = () => {
                     className="input focus:outline-none focus:border-[#632ee3] w-full"
                     placeholder="Your Name"
                     name="name"
+                    defaultValue={user?.displayName}
+                    readOnly
                   />
                 </div>
                 <div className="w-full md:w-1/2">
@@ -229,6 +239,8 @@ const CreateProduct = () => {
                     className="input focus:outline-none focus:border-[#632ee3] w-full"
                     placeholder="Your Email"
                     name="email"
+                    defaultValue={user?.email}
+                    readOnly
                   />
                 </div>
               </div>
@@ -239,6 +251,7 @@ const CreateProduct = () => {
                   <label className="label">Seller Contact</label>
                   <input
                     type="text"
+                    required
                     className="input focus:outline-none focus:border-[#632ee3] w-full"
                     placeholder="Your Contact"
                     name="sContact"
@@ -251,6 +264,8 @@ const CreateProduct = () => {
                     className="input focus:outline-none focus:border-[#632ee3] w-full"
                     placeholder="Your Image URL"
                     name="sImgURL"
+                    defaultValue={user.photoURL}
+                    readOnly
                   />
                 </div>
               </div>
@@ -260,6 +275,7 @@ const CreateProduct = () => {
                 <label className="label">Location</label>
                 <input
                   type="text"
+                  required
                   name="location"
                   className="input w-full focus:outline-none focus:border-[#632ee3]"
                   placeholder="City, Country"

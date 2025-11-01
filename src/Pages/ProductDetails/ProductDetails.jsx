@@ -297,7 +297,7 @@ const ProductDetails = () => {
                 <tr>
                   <th>SL NO</th>
                   <th>Product</th>
-                  <th>Seller</th>
+                  <th>Buyer</th>
                   <th>Bid Price</th>
                   <th>Action</th>
                 </tr>
@@ -327,12 +327,14 @@ const ProductDetails = () => {
                       <div className="flex items-center gap-3">
                         <div className="avatar">
                           <div className="rounded-full h-10 w-10">
-                            <img src={seller_image} alt={seller_name} />
+                            <img src={bid.buyer_image} alt={bid.buyer_name} />
                           </div>
                         </div>
                         <div>
-                          <div className="font-bold">{seller_name}</div>
-                          <div className="text-sm opacity-50">{email}</div>
+                          <div className="font-bold">{bid.buyer_name}</div>
+                          <div className="text-sm opacity-50">
+                            {bid.buyer_email}
+                          </div>
                         </div>
                       </div>
                     </td>
