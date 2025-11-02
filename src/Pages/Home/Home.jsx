@@ -1,4 +1,3 @@
-import axios from "axios";
 import Banner from "../../Components/Banner/Banner";
 import Container from "../../Components/Container/Container";
 import LatestProducts from "../../Components/LatestProducts/LatestProducts";
@@ -7,7 +6,7 @@ import ProductCardSkeleton from "../../Components/ProductCardSkeleton/ProductCar
 import AllProductsContext from "../../Context/AllProductsContext";
 
 const Home = () => {
-  const { latestProducts } = use(AllProductsContext);
+  const { latestProducts, loading } = use(AllProductsContext);
   return (
     <section>
       <Banner />;
@@ -21,15 +20,13 @@ const Home = () => {
             Products
           </span>
         </h3>
-        {/* <Suspense
-          fallback={
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
-              {[...Array(8)].map((_, i) => (
-                <ProductCardSkeleton key={i} />
-              ))}
-            </div>
-          }
-        > */}
+        {loading && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[...Array(6)].map((_, i) => (
+              <ProductCardSkeleton key={i} />
+            ))}
+          </div>
+        )}
         <LatestProducts latestProducts={latestProducts} />
         {/* </Suspense> */}
       </Container>
