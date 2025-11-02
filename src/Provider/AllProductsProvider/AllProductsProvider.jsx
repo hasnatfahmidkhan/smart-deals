@@ -4,6 +4,7 @@ import AllProductsContext from "../../Context/AllProductsContext";
 const AllProductsProvider = ({ children }) => {
   const [allProducts, setAllProducts] = useState([]);
   const [latestProducts, setLatestProducts] = useState([]);
+  
   useEffect(() => {
     fetch("http://localhost:3000/products")
       .then((res) => res.json())

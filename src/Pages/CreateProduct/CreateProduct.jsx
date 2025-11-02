@@ -1,9 +1,8 @@
-import React, { use, useEffect, useState } from "react";
+import { use } from "react";
 import { FiArrowLeft } from "react-icons/fi";
 import { useNavigate } from "react-router";
 import Container from "../../Components/Container/Container";
 import Swal from "sweetalert2";
-import { AuthContext } from "../../Context/AuthContext/AuthContext";
 import AllProductsContext from "../../Context/AllProductsContext";
 import ProductForm from "../../Components/ProductForm/ProductForm";
 
