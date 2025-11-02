@@ -6,9 +6,7 @@ import AllProductsContext from "../../Context/AllProductsContext";
 
 const MyBids = () => {
   const { user } = use(AuthContext);
-  const { setAllProducts, allProducts } = use(AllProductsContext);
   const [bids, setBids] = useState([]);
-  const [bidsProducts, setBidsProducts] = useState([])
 
   useEffect(() => {
     fetch(`http://localhost:3000/bids/?email=${user?.email}`)
@@ -17,7 +15,6 @@ const MyBids = () => {
         data.sort((a, b) => b.bid_price - a.bid_price);
         setBids(data);
       });
-    
   }, [user?.email]);
 
   //   delete bid

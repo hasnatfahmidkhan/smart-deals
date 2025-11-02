@@ -1,11 +1,15 @@
-import React, { use, useEffect, useState } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import Container from "../../Components/Container/Container";
 import { AuthContext } from "../../Context/AuthContext/AuthContext";
 import Swal from "sweetalert2";
+import ProductForm from "../../Components/ProductForm/ProductForm";
 
 const MyProducts = () => {
   const { user } = use(AuthContext);
   const [products, setProducts] = useState([]);
+  const [editProduct, setEditProduct] = useState({});
+  const productEditRef = useRef(null);
+
   useEffect(() => {
     fetch(`http://localhost:3000/products?email=${user?.email}`)
       .then((res) => res.json())
@@ -68,6 +72,43 @@ const MyProducts = () => {
         }
       });
   };
+
+  const handleProductModal = (productId) => {
+    productEditRef.current.showModal();
+    const product = products.find((p) => p._id === productId);
+    setEditProduct(product);
+  };
+
+  const handleEditProduct = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const formJson = Object.fromEntries(formData.entries());
+    fetch(`http://localhost:3000/products/${editProduct._id}`, {
+      method: "PATCH",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ ...formJson }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.modifiedCount == 1) {
+          const modifiedProducts = products.map((p) => {
+            if (p._id === editProduct._id) {
+              p.title = formJson.title;
+              p.image = formJson.image;
+              p.location = formJson.location;
+              p.description = formJson.description;
+            }
+            return p;
+          });
+          setProducts(modifiedProducts);
+          productEditRef.current.close();
+        }
+      });
+  };
+
   return (
     <Container>
       <h3 className="text-5xl font-bold text-center tracking-wide">
@@ -126,9 +167,9 @@ const MyProducts = () => {
                   </span>
                 </td>
                 {/* action  */}
-                <td className="space-x-3 ">
+                <td className="flex items-center gap-3">
                   <button
-                    // onClick={() => handleDeleteproduct(product._id)}
+                    onClick={() => handleProductModal(product._id)}
                     className="btn btn-outline btn-sm btn-primary"
                   >
                     Edit
@@ -152,6 +193,91 @@ const MyProducts = () => {
           </tbody>
         </table>
       </div>
+      {/* update product modal  */}
+      <dialog
+        ref={productEditRef}
+        className="modal modal-bottom sm:modal-middle"
+      >
+        <div className="modal-box">
+          <div className="max-w-2xl bg-white shadow-md mx-auto rounded-2xl p-7 md:p-10">
+            <form onSubmit={handleEditProduct}>
+              <fieldset className="fieldset space-y-3">
+                {/* product title and category  */}
+                {/* title  */}
+                <div className="w-full">
+                  <label className="label">Title</label>
+                  <input
+                    defaultValue={editProduct?.title}
+                    type="text"
+                    className="input focus:outline-none focus:border-[#632ee3] w-full"
+                    placeholder="Your Product Title"
+                    name="title"
+                    required
+                  />
+                </div>
+
+                {/* image  */}
+                <div>
+                  <label className="label">Your Product Image URL</label>
+                  <input
+                    required
+                    type="text"
+                    name="image"
+                    className="input w-full focus:outline-none focus:border-[#632ee3]"
+                    placeholder="https://...your_img_url"
+                    defaultValue={editProduct?.image}
+                  />
+                </div>
+
+                {/* location  */}
+                <div>
+                  <label className="label">Location</label>
+                  <input
+                    type="text"
+                    required
+                    name="location"
+                    className="input w-full focus:outline-none focus:border-[#632ee3]"
+                    placeholder="City, Country"
+                    defaultValue={editProduct?.location}
+                  />
+                </div>
+                {/* product info  */}
+                <div>
+                  <label className="label">
+                    Simple Description about your Product
+                  </label>
+                  <textarea
+                    name="description"
+                    type="text"
+                    rows={4}
+                    className="textarea w-full focus:outline-none focus:border-[#632ee3]"
+                    placeholder="Your Product Info..."
+                    defaultValue={editProduct?.description}
+                  />
+                </div>
+
+                <div className="flex items-center justify-end gap-3">
+                  <button
+                    onClick={() => productEditRef.current.close()}
+                    type="button"
+                    className="btn font-semibold px-7 text-[#632ee3] border border-[#632ee3] rounded-md bg-transparent"
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    type="submit"
+                    style={{ background: "var(--gradient-primary)" }}
+                    className="btn rounded-md text-white"
+                  >
+                    Update Details
+                  </button>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+        </div>
+      </dialog>
     </Container>
   );
 };
