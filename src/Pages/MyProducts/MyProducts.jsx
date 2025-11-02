@@ -1,6 +1,7 @@
 import React, { use, useEffect, useState } from "react";
 import Container from "../../Components/Container/Container";
 import { AuthContext } from "../../Context/AuthContext/AuthContext";
+import Swal from "sweetalert2";
 
 const MyProducts = () => {
   const { user } = use(AuthContext);
@@ -12,6 +13,61 @@ const MyProducts = () => {
         setProducts(data);
       });
   }, [user?.email]);
+
+  const handleDeleteproduct = (productId) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`http://localhost:3000/products/${productId}`, {
+          method: "DELETE",
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.deletedCount == 1) {
+              const remainings = products.filter(
+                (product) => product._id !== productId
+              );
+              setProducts(remainings);
+            }
+          });
+        // fetch end
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your bid has been deleted.",
+          icon: "success",
+        });
+      }
+    });
+  };
+
+  const handleUpdateStatus = (productId) => {
+    fetch(`http://localhost:3000/products/${productId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status: "sold" }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.modifiedCount) {
+          const modifiedProducts = products.map((p) => {
+            if (p._id === productId) {
+              p.status = "Sold";
+            }
+            return p;
+          });
+          setProducts(modifiedProducts);
+        }
+      });
+  };
   return (
     <Container>
       <h3 className="text-5xl font-bold text-center tracking-wide">
@@ -69,7 +125,8 @@ const MyProducts = () => {
                     {product.status}
                   </span>
                 </td>
-                <td className="space-x-3">
+                {/* action  */}
+                <td className="space-x-3 ">
                   <button
                     // onClick={() => handleDeleteproduct(product._id)}
                     className="btn btn-outline btn-sm btn-primary"
@@ -77,16 +134,17 @@ const MyProducts = () => {
                     Edit
                   </button>
                   <button
-                    // onClick={() => handleDeleteproduct(product._id)}
+                    onClick={() => handleDeleteproduct(product._id)}
                     className="btn btn-outline btn-sm btn-error"
                   >
                     Delete
                   </button>
                   <button
-                    // onClick={() => handleDeleteproduct(product._id)}
+                    disabled={product.status !== "pending"}
+                    onClick={() => handleUpdateStatus(product._id)}
                     className="btn btn-outline btn-sm btn-success"
                   >
-                    Make Sold
+                    {product.status == "pending" ? "Make sold" : "Already sold"}
                   </button>
                 </td>
               </tr>

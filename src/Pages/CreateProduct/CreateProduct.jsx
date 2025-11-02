@@ -4,9 +4,11 @@ import { useNavigate } from "react-router";
 import Container from "../../Components/Container/Container";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../Context/AuthContext/AuthContext";
+import AllProductsContext from "../../Context/AllProductsContext";
 
 const CreateProduct = () => {
   const { user } = use(AuthContext);
+  const { setAllProducts, allProducts } = use(AllProductsContext);
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
 
@@ -58,6 +60,10 @@ const CreateProduct = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.insertedId) {
+          newProduct._id = data.insertedId;
+
+          setAllProducts([...allProducts, newProduct]);
+
           form.reset();
           Swal.fire({
             position: "top-end",
@@ -128,9 +134,7 @@ const CreateProduct = () => {
                       Select A Category
                     </option>
                     {categories?.map((cat) => (
-                      <option value={cat.category} key={cat._id}>
-                        {cat.category}
-                      </option>
+                      <option key={cat._id}>{cat.category}</option>
                     ))}
                   </select>
                 </div>

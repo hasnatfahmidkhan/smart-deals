@@ -2,14 +2,12 @@ import axios from "axios";
 import Banner from "../../Components/Banner/Banner";
 import Container from "../../Components/Container/Container";
 import LatestProducts from "../../Components/LatestProducts/LatestProducts";
-import { Suspense } from "react";
+import { Suspense, use } from "react";
 import ProductCardSkeleton from "../../Components/ProductCardSkeleton/ProductCardSkeleton";
-
-const latestProductsPromise = axios.get(
-  "http://localhost:3000/latest-products"
-);
+import AllProductsContext from "../../Context/AllProductsContext";
 
 const Home = () => {
+  const { latestProducts } = use(AllProductsContext);
   return (
     <section>
       <Banner />;
@@ -23,7 +21,7 @@ const Home = () => {
             Products
           </span>
         </h3>
-        <Suspense
+        {/* <Suspense
           fallback={
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
               {[...Array(8)].map((_, i) => (
@@ -31,9 +29,9 @@ const Home = () => {
               ))}
             </div>
           }
-        >
-          <LatestProducts latestProductsPromise={latestProductsPromise} />
-        </Suspense>
+        > */}
+        <LatestProducts latestProducts={latestProducts} />
+        {/* </Suspense> */}
       </Container>
     </section>
   );
