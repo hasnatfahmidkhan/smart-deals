@@ -2,23 +2,20 @@ import { useEffect, useState } from "react";
 import Container from "../../Components/Container/Container";
 import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const MyBids = () => {
   const { user } = useAuth();
   const [bids, setBids] = useState([]);
+  const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
-    fetch(`http://localhost:3000/bids/?email=${user?.email}`, {
-      headers: {
-        authorization: `Bearer ${user.accessToken}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        data.sort((a, b) => b.bid_price - a.bid_price);
-        setBids(data);
-      });
-  }, [user]);
+    axiosSecure.get(`/bids/?email=${user?.email}`).then(({ data }) => {
+      data.sort((a, b) => b.bid_price - a.bid_price);
+      setBids(data);
+    });
+   
+  }, [user, axiosSecure]);
 
   //   delete bid
   const handleDeleteBid = (id) => {
