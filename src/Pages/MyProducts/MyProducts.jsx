@@ -1,15 +1,19 @@
-import  { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Container from "../../Components/Container/Container";
 import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-
 const MyProducts = () => {
+  const [title, setTitle] = useState("");
+  const [pImage, setPImage] = useState("");
+  const [pLocation, setPLocation] = useState("");
+  const [pDescription, setPDescription] = useState("");
   const { user } = useAuth();
   const [products, setProducts] = useState([]);
   const [editProduct, setEditProduct] = useState({});
   const productEditRef = useRef(null);
   const axiosSecure = useAxiosSecure();
+
   useEffect(() => {
     axiosSecure.get(`/my-products?email=${user?.email}`).then((data) => {
       setProducts(data.data);
@@ -27,19 +31,15 @@ const MyProducts = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:3000/products/${productId}`, {
-          method: "DELETE",
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.deletedCount == 1) {
-              const remainings = products.filter(
-                (product) => product._id !== productId
-              );
-              setProducts(remainings);
-            }
-          });
-        // fetch end
+        axiosSecure.delete(`products/${productId}`).then((data) => {
+          if (data.data.deletedCount == 1) {
+            const remainings = products.filter(
+              (product) => product._id !== productId
+            );
+            setProducts(remainings);
+          }
+        });
+
         Swal.fire({
           title: "Deleted!",
           text: "Your bid has been deleted.",
@@ -50,16 +50,10 @@ const MyProducts = () => {
   };
 
   const handleUpdateStatus = (productId) => {
-    fetch(`http://localhost:3000/products/${productId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ status: "sold" }),
-    })
-      .then((res) => res.json())
+    axiosSecure
+      .patch(`/products/${productId}`, { status: "sold" })
       .then((data) => {
-        if (data.modifiedCount) {
+        if (data.data.modifiedCount) {
           const modifiedProducts = products.map((p) => {
             if (p._id === productId) {
               p.status = "Sold";
@@ -74,36 +68,43 @@ const MyProducts = () => {
   const handleProductModal = (productId) => {
     productEditRef.current.showModal();
     const product = products.find((p) => p._id === productId);
+    setTitle(product.title);
+    setPImage(product.image);
+    setPLocation(product.location);
+    setPDescription(product.description);
     setEditProduct(product);
   };
 
   const handleEditProduct = (e) => {
     e.preventDefault();
-    const form = e.target;
-    const formData = new FormData(form);
-    const formJson = Object.fromEntries(formData.entries());
-    fetch(`http://localhost:3000/products/${editProduct._id}`, {
-      method: "PATCH",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({ ...formJson }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
+    const editedProduct = {
+      title: title,
+      image: pImage,
+      location: pLocation,
+      description: pDescription,
+    };
+    axiosSecure
+      .patch(`/products/${editProduct._id}`, { ...editedProduct })
+      .then(({ data }) => {
         if (data.modifiedCount == 1) {
           const modifiedProducts = products.map((p) => {
             if (p._id === editProduct._id) {
-              p.title = formJson.title;
-              p.image = formJson.image;
-              p.location = formJson.location;
-              p.description = formJson.description;
+              p.title = title;
+              p.image = pImage;
+              p.location = pLocation;
+              p.description = pDescription;
             }
             return p;
           });
           setProducts(modifiedProducts);
           productEditRef.current.close();
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Product Udpated Successfully!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
         }
       });
   };
@@ -206,7 +207,8 @@ const MyProducts = () => {
                 <div className="w-full">
                   <label className="label">Title</label>
                   <input
-                    defaultValue={editProduct?.title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    value={title}
                     type="text"
                     className="input focus:outline-none focus:border-[#632ee3] w-full"
                     placeholder="Your Product Title"
@@ -224,7 +226,8 @@ const MyProducts = () => {
                     name="image"
                     className="input w-full focus:outline-none focus:border-[#632ee3]"
                     placeholder="https://...your_img_url"
-                    defaultValue={editProduct?.image}
+                    onChange={(e) => setPImage(e.target.value)}
+                    value={pImage}
                   />
                 </div>
 
@@ -237,7 +240,8 @@ const MyProducts = () => {
                     name="location"
                     className="input w-full focus:outline-none focus:border-[#632ee3]"
                     placeholder="City, Country"
-                    defaultValue={editProduct?.location}
+                    onChange={(e) => setPLocation(e.target.value)}
+                    value={pLocation}
                   />
                 </div>
                 {/* product info  */}
@@ -251,7 +255,8 @@ const MyProducts = () => {
                     rows={4}
                     className="textarea w-full focus:outline-none focus:border-[#632ee3]"
                     placeholder="Your Product Info..."
-                    defaultValue={editProduct?.description}
+                    onChange={(e) => setPDescription(e.target.value)}
+                    value={pDescription}
                   />
                 </div>
 
