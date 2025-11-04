@@ -2,24 +2,19 @@ import React, { useEffect, useRef, useState } from "react";
 import Container from "../../Components/Container/Container";
 import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const MyProducts = () => {
   const { user } = useAuth();
   const [products, setProducts] = useState([]);
   const [editProduct, setEditProduct] = useState({});
   const productEditRef = useRef(null);
-
+  const axiosSecure = useAxiosSecure();
   useEffect(() => {
-    fetch(`http://localhost:3000/my-products?email=${user?.email}`, {
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setProducts(data);
-      });
-  }, [user]);
+    axiosSecure.get(`/my-products?email=${user?.email}`).then((data) => {
+      setProducts(data.data);
+    });
+  }, [user, axiosSecure]);
 
   const handleDeleteproduct = (productId) => {
     Swal.fire({
