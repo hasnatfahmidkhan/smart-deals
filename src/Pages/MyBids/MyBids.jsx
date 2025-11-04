@@ -14,7 +14,6 @@ const MyBids = () => {
       data.sort((a, b) => b.bid_price - a.bid_price);
       setBids(data);
     });
-   
   }, [user, axiosSecure]);
 
   //   delete bid
@@ -85,13 +84,19 @@ const MyBids = () => {
                   <div className="flex items-center gap-3">
                     <div className="avatar">
                       <div className="rounded-md h-8 w-12">
-                        {/* <img src={image} alt={title} /> */}
+                        <img
+                          src={bid?.productsInfo?.image}
+                          alt={bid?.productsInfo?.title}
+                        />
                       </div>
                     </div>
                     <div>
-                      {/* <div className="font-bold">{title}</div> */}
+                      <div className="font-bold">
+                        {bid?.productsInfo?.title}
+                      </div>
                       <div className="text-sm opacity-50">
-                        {/* ${price_min}-{price_max} */}
+                        ${bid?.productsInfo?.price_min}-
+                        {bid?.productsInfo?.price_max}
                       </div>
                     </div>
                   </div>
@@ -101,12 +106,19 @@ const MyBids = () => {
                   <div className="flex items-center gap-3">
                     <div className="avatar">
                       <div className="rounded-full h-10 w-10">
-                        {/* <img src={sellerimg} alt={seller_name} /> */}
+                        <img
+                          src={bid?.productsInfo?.seller_image}
+                          alt={bid?.productsInfo?.seller_name}
+                        />
                       </div>
                     </div>
                     <div>
-                      {/* <div className="font-bold">{seller_name}</div> */}
-                      {/* <div className="text-sm opacity-50">{email}</div> */}
+                      <div className="font-bold">
+                        {bid?.productsInfo?.seller_name}
+                      </div>
+                      <div className="text-sm opacity-50">
+                        {bid?.productsInfo?.email}
+                      </div>
                     </div>
                   </div>
                 </td>
