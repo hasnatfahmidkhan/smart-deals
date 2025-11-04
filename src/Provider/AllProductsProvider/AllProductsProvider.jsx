@@ -1,30 +1,28 @@
 import { useEffect, useState } from "react";
 import AllProductsContext from "../../Context/AllProductsContext";
+import useAxios from "../../hooks/useAxios";
 
 const AllProductsProvider = ({ children }) => {
   const [allProducts, setAllProducts] = useState([]);
   const [latestProducts, setLatestProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const axiosInstance = useAxios();
 
   useEffect(() => {
     setLoading(true);
-    fetch("http://localhost:3000/products")
-      .then((res) => res.json())
-      .then((data) => {
-        setAllProducts(data);
-        setLoading(false);
-      });
-  }, []);
+    axiosInstance.get("/products").then((data) => {
+      setAllProducts(data.data);
+      setLoading(false);
+    });
+  }, [axiosInstance]);
 
   useEffect(() => {
     setLoading(true);
-    fetch("http://localhost:3000/latest-products")
-      .then((res) => res.json())
-      .then((data) => {
-        setLatestProducts(data);
-        setLoading(false);
-      });
-  }, []);
+    axiosInstance.get("/latest-products").then((data) => {
+      setLatestProducts(data.data);
+      setLoading(false);
+    });
+  }, [axiosInstance]);
   const products = {
     allProducts,
     latestProducts,
