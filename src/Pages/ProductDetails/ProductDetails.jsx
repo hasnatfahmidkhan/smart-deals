@@ -1,16 +1,24 @@
 import { useEffect, useRef, useState } from "react";
 import Container from "../../Components/Container/Container";
-import { useLoaderData, useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { FiArrowLeft } from "react-icons/fi";
 import { format } from "date-fns";
 import BtnPrimary from "../../Components/Buttons/BtnPrimary/BtnPrimary";
 import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 const ProductDetails = () => {
   const { user } = useAuth();
   const [bids, setBids] = useState([]);
-  const { data: product } = useLoaderData();
   const navigate = useNavigate();
+  const [product, setProduct] = useState("");
   const bidModalRef = useRef();
+  const { id } = useParams();
+  const axiosSecure = useAxiosSecure();
+  useEffect(() => {
+    axiosSecure.get(`/products/${id}`).then(({ data }) => {
+      setProduct(data);
+    });
+  }, [axiosSecure, id]);
 
   const {
     seller_contact,
@@ -154,7 +162,9 @@ const ProductDetails = () => {
               <p className="text-sm">Product ID: {_id}</p>
               <p className="text-sm">
                 Posted:{" "}
-                {format(new Date(created_at).toLocaleString(), "MM/dd/yyyy")}
+                {created_at
+                  ? format(new Date(created_at), "MM/dd/yyyy")
+                  : "N/A"}
               </p>
             </div>
           </div>

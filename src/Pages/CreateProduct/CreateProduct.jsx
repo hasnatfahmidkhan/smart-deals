@@ -5,10 +5,14 @@ import Container from "../../Components/Container/Container";
 import Swal from "sweetalert2";
 import AllProductsContext from "../../Context/AllProductsContext";
 import ProductForm from "../../Components/ProductForm/ProductForm";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAuth from "../../hooks/useAuth";
 
 const CreateProduct = () => {
   const { setAllProducts, allProducts } = use(AllProductsContext);
   const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
 
   const handleCreateProduct = (e) => {
     e.preventDefault();
@@ -49,15 +53,10 @@ const CreateProduct = () => {
       created_at: new Date().toISOString(),
     };
 
-    fetch("http://localhost:3000/products", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(newProduct),
-    })
-      .then((res) => res.json())
-      .then((data) => {
+    axiosSecure
+      .post(`/products?email=${user.email}`, { ...newProduct })
+      .then(({ data }) => {
+        console.log(data);
         if (data.insertedId) {
           newProduct._id = data.insertedId;
 
@@ -73,6 +72,7 @@ const CreateProduct = () => {
           });
         }
       });
+
   };
 
   return (
