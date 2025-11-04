@@ -56,7 +56,7 @@ const ProductDetails = () => {
       status: "pending",
     };
 
-    fetch("http://localhost:3000/bids", {
+    fetch("https://smart-deals-api-server-phi.vercel.app/bids", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(newBid),
@@ -75,11 +75,14 @@ const ProductDetails = () => {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:3000/bids/byProduct/${_id}`, {
-      headers: {
-        authorization: `Bearer ${user.accessToken}`,
-      },
-    })
+    fetch(
+      `https://smart-deals-api-server-phi.vercel.app/bids/byProduct/${_id}`,
+      {
+        headers: {
+          authorization: `Bearer ${user.accessToken}`,
+        },
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         setBids(data);

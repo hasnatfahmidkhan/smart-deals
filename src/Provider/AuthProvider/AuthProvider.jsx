@@ -35,7 +35,7 @@ const AuthProvider = ({ children }) => {
     const unsubcribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        fetch("http://localhost:3000/getToken", {
+        fetch("https://smart-deals-api-server-phi.vercel.app/getToken", {
           method: "POST",
           headers: {
             "content-type": "application/json",
@@ -50,7 +50,7 @@ const AuthProvider = ({ children }) => {
       setAuthloading(false);
       const { email, displayName, photoURL } = currentUser || {};
       const newUser = { email, displayName, photoURL };
-      fetch("http://localhost:3000/users", {
+      fetch("https://smart-deals-api-server-phi.vercel.app/users", {
         method: "POST",
         headers: {
           "content-type": "application/json",
