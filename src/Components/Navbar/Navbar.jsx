@@ -1,11 +1,10 @@
 import { NavLink, Link } from "react-router";
 import BtnPrimary from "../Buttons/BtnPrimary/BtnPrimary";
 import BtnSecondary from "../Buttons/BtnSecondary/BtnSecondary";
-import { use } from "react";
-import { AuthContext } from "../../Context/AuthContext/AuthContext";
+import useAuth from "../../hooks/useAuth";
 
 const Navbar = () => {
-  const { user, signoutFunc } = use(AuthContext);
+  const { user, signoutFunc } = useAuth();
   const handleSignOut = () => {
     signoutFunc()
       .then(() => {

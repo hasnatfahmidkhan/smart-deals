@@ -1,22 +1,25 @@
-import React, { use, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Container from "../../Components/Container/Container";
-import { AuthContext } from "../../Context/AuthContext/AuthContext";
 import Swal from "sweetalert2";
-import ProductForm from "../../Components/ProductForm/ProductForm";
+import useAuth from "../../hooks/useAuth";
 
 const MyProducts = () => {
-  const { user } = use(AuthContext);
+  const { user } = useAuth();
   const [products, setProducts] = useState([]);
   const [editProduct, setEditProduct] = useState({});
   const productEditRef = useRef(null);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/products?email=${user?.email}`)
+    fetch(`http://localhost:3000/my-products?email=${user?.email}`, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
       });
-  }, [user?.email]);
+  }, [user]);
 
   const handleDeleteproduct = (productId) => {
     Swal.fire({
@@ -93,6 +96,7 @@ const MyProducts = () => {
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         if (data.modifiedCount == 1) {
           const modifiedProducts = products.map((p) => {
             if (p._id === editProduct._id) {

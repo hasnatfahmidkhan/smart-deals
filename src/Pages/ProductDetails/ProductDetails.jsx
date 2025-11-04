@@ -1,12 +1,12 @@
-import { use, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Container from "../../Components/Container/Container";
 import { useLoaderData, useNavigate } from "react-router";
 import { FiArrowLeft } from "react-icons/fi";
 import { format } from "date-fns";
 import BtnPrimary from "../../Components/Buttons/BtnPrimary/BtnPrimary";
-import { AuthContext } from "../../Context/AuthContext/AuthContext";
+import useAuth from "../../hooks/useAuth";
 const ProductDetails = () => {
-  const { user } = use(AuthContext);
+  const { user } = useAuth();
   const [bids, setBids] = useState([]);
   const { data: product } = useLoaderData();
   const navigate = useNavigate();
@@ -35,6 +35,9 @@ const ProductDetails = () => {
     e.preventDefault();
     const bidPrice = e.target.bidPrice.value;
     const contactInfo = e.target.contactInfo.value;
+    if (bidPrice.length === 1 || contactInfo.length === 1) {
+      return "";
+    }
     const newBid = {
       product: _id,
       buyer_image: user?.photoURL,
@@ -52,7 +55,6 @@ const ProductDetails = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("After new bid", data);
         if (data.insertedId) {
           newBid._id = data.insertedId;
           const newBids = [...bids, newBid].sort(
@@ -65,12 +67,16 @@ const ProductDetails = () => {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:3000/bids/byProduct/${_id}`)
+    fetch(`http://localhost:3000/bids/byProduct/${_id}`, {
+      headers: {
+        authorization: `Bearer ${user.accessToken}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         setBids(data);
       });
-  }, [_id]);
+  }, [_id, user]);
 
   return (
     <Container className={"my-10"}>
@@ -242,6 +248,7 @@ const ProductDetails = () => {
                     name="bidPrice"
                     className="input w-full focus:outline-none focus:border-[#632ee3]"
                     placeholder="Place Your Price"
+                    required
                   />
                 </div>
                 {/* contact info  */}
@@ -252,6 +259,7 @@ const ProductDetails = () => {
                     type="text"
                     className="input w-full focus:outline-none focus:border-[#632ee3]"
                     placeholder="Your Contact Info"
+                    required
                   />
                 </div>
                 <div className="justify-self-end space-x-3 mt-4">

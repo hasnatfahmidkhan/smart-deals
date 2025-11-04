@@ -32,7 +32,7 @@ const AllProductsProvider = ({ children }) => {
     setLatestProducts,
     loading,
   };
-  
+
   return <AllProductsContext value={products}>{children}</AllProductsContext>;
 };
 

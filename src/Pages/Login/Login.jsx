@@ -3,22 +3,22 @@ import BtnPrimary from "../../Components/Buttons/BtnPrimary/BtnPrimary";
 import { IoMdEyeOff } from "react-icons/io";
 import MyInput from "../../Components/MyInput/MyInput";
 import MyLabel from "../../Components/MyLabel/MyLabel";
-import { use, useState } from "react";
+import { useState } from "react";
 import { IoEye } from "react-icons/io5";
-import { AuthContext } from "../../Context/AuthContext/AuthContext";
+import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
   const [showPass, setShowPass] = useState(false);
-  const { user } = use(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
 
   const {
+    user,
     signInWithGoogleFunc,
     setUser,
     setAuthloading,
     signInWithEmailPassFunc,
-  } = use(AuthContext);
+  } = useAuth();
 
   if (user) {
     return <Navigate to={"/"} />;

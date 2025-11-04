@@ -1,8 +1,8 @@
-import { use, useEffect, useState } from "react";
-import { AuthContext } from "../../Context/AuthContext/AuthContext";
+import { useEffect, useState } from "react";
+import useAuth from "../../hooks/useAuth";
 
 const ProductForm = ({ submitHandler }) => {
-  const { user } = use(AuthContext);
+  const { user } = useAuth();
   const [categories, setCategories] = useState([]);
   useEffect(() => {
     fetch("http://localhost:3000/categories")

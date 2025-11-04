@@ -1,14 +1,23 @@
-import React, { use } from "react";
-import { AuthContext } from "../../Context/AuthContext/AuthContext";
-import { Navigate } from "react-router";
+import { Navigate, useLocation } from "react-router";
+import useAuth from "../../hooks/useAuth";
 
 const PrivateRoutes = ({ children }) => {
-  const { user } = use(AuthContext);
+  const { user, authloading } = useAuth();
+  const location = useLocation();
 
-  if (user) {
-    return children;
+  if (authloading) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <span className="loading loading-bars loading-xl text-info"></span>
+      </div>
+    );
   }
-  return <Navigate to={"/login"} />;
+
+  if (!user) {
+    return <Navigate to={"/login"} state={location.pathname} />;
+  }
+
+  return children;
 };
 
 export default PrivateRoutes;

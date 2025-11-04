@@ -33,8 +33,34 @@ const AuthProvider = ({ children }) => {
   // auth observer
   useEffect(() => {
     const unsubcribe = onAuthStateChanged(auth, (currentUser) => {
-      setAuthloading(false);
       setUser(currentUser);
+      if (currentUser) {
+        fetch("http://localhost:3000/getToken", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({ email: currentUser.email }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            localStorage.setItem("token", data.token);
+          });
+      }
+      setAuthloading(false);
+      const { email, displayName, photoURL } = currentUser || {};
+      const newUser = { email, displayName, photoURL };
+      fetch("http://localhost:3000/users", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(newUser),
+      })
+        .then((res) => res.json())
+        .then(() => {
+          // console.log(data);
+        });
     });
 
     return () => unsubcribe();

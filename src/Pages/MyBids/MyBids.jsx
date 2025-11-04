@@ -1,21 +1,24 @@
-import React, { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Container from "../../Components/Container/Container";
-import { AuthContext } from "../../Context/AuthContext/AuthContext";
 import Swal from "sweetalert2";
-import AllProductsContext from "../../Context/AllProductsContext";
+import useAuth from "../../hooks/useAuth";
 
 const MyBids = () => {
-  const { user } = use(AuthContext);
+  const { user } = useAuth();
   const [bids, setBids] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/bids/?email=${user?.email}`)
+    fetch(`http://localhost:3000/bids/?email=${user?.email}`, {
+      headers: {
+        authorization: `Bearer ${user.accessToken}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         data.sort((a, b) => b.bid_price - a.bid_price);
         setBids(data);
       });
-  }, [user?.email]);
+  }, [user]);
 
   //   delete bid
   const handleDeleteBid = (id) => {
