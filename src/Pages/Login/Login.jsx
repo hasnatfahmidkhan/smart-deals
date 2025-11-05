@@ -6,6 +6,7 @@ import MyLabel from "../../Components/MyLabel/MyLabel";
 import { useState } from "react";
 import { IoEye } from "react-icons/io5";
 import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [showPass, setShowPass] = useState(false);
@@ -13,16 +14,11 @@ const Login = () => {
   const navigate = useNavigate();
 
   const {
-    user,
     signInWithGoogleFunc,
     setUser,
     setAuthloading,
     signInWithEmailPassFunc,
   } = useAuth();
-
-  if (user) {
-    return <Navigate to={"/"} />;
-  }
 
   // login using email password
   const handleEmailPasswordLogin = (e) => {
@@ -34,6 +30,7 @@ const Login = () => {
         const currentUser = result.user;
         setUser(currentUser);
         navigate(location.state || "/");
+        toast.success("Login Successfully!");
       })
       .then((err) => {
         alert(err.message);
@@ -48,6 +45,7 @@ const Login = () => {
         const currentUser = result.user;
         setUser(currentUser);
         navigate(location.state || "/");
+        toast.success("Login Successfully!");
       })
       .then((err) => {
         alert(err.message);

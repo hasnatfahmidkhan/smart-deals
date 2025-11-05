@@ -2,13 +2,14 @@ import { NavLink, Link } from "react-router";
 import BtnPrimary from "../Buttons/BtnPrimary/BtnPrimary";
 import BtnSecondary from "../Buttons/BtnSecondary/BtnSecondary";
 import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
   const { user, signoutFunc } = useAuth();
   const handleSignOut = () => {
     signoutFunc()
       .then(() => {
-        alert("Sign out successfully");
+        toast.success("Logout Successfully!");
       })
       .then((err) => {
         alert(err.message);
@@ -148,7 +149,9 @@ const Navbar = () => {
             >
               {links}
               {user ? (
-                <li>Signout</li>
+                <li onClick={handleSignOut} className="text-lg cursor-pointer">
+                  <span>Signout</span>
+                </li>
               ) : (
                 <>
                   <li>

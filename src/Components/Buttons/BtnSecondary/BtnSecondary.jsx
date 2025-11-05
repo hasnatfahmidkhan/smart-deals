@@ -1,8 +1,9 @@
 import { Link } from "react-router";
 
-const BtnSecondary = ({ children, to, className }) => {
+const BtnSecondary = ({ children, to, className, onClick }) => {
   return (
     <Link
+      onClick={onClick}
       to={`${to}`}
       className={`btn font-semibold px-7 text-[#632ee3] border border-[#632ee3] rounded-md bg-transparent ${className}`}
     >

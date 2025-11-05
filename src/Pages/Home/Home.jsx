@@ -1,7 +1,7 @@
 import Banner from "../../Components/Banner/Banner";
 import Container from "../../Components/Container/Container";
 import LatestProducts from "../../Components/LatestProducts/LatestProducts";
-import { Suspense, use } from "react";
+import { use } from "react";
 import ProductCardSkeleton from "../../Components/ProductCardSkeleton/ProductCardSkeleton";
 import AllProductsContext from "../../Context/AllProductsContext";
 

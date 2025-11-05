@@ -2,11 +2,11 @@ import { use } from "react";
 import { FiArrowLeft } from "react-icons/fi";
 import { useNavigate } from "react-router";
 import Container from "../../Components/Container/Container";
-import Swal from "sweetalert2";
 import AllProductsContext from "../../Context/AllProductsContext";
 import ProductForm from "../../Components/ProductForm/ProductForm";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const CreateProduct = () => {
   const { setAllProducts, allProducts } = use(AllProductsContext);
@@ -63,16 +63,9 @@ const CreateProduct = () => {
           setAllProducts([...allProducts, newProduct]);
 
           form.reset();
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Your Product added Successfully!",
-            showConfirmButton: false,
-            timer: 1500,
-          });
+          toast.success("Product Created Successfully!");
         }
       });
-
   };
 
   return (

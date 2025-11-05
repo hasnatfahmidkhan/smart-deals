@@ -3,6 +3,7 @@ import Container from "../../Components/Container/Container";
 import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import toast from "react-hot-toast";
 const MyProducts = () => {
   const [title, setTitle] = useState("");
   const [pImage, setPImage] = useState("");
@@ -98,13 +99,7 @@ const MyProducts = () => {
           });
           setProducts(modifiedProducts);
           productEditRef.current.close();
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Product Udpated Successfully!",
-            showConfirmButton: false,
-            timer: 1500,
-          });
+          toast.success("Product Updated Successfully!");
         }
       });
   };

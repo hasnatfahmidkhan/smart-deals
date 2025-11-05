@@ -5,8 +5,8 @@ import BtnPrimary from "../../Components/Buttons/BtnPrimary/BtnPrimary";
 import BtnSecondary from "../../Components/Buttons/BtnSecondary/BtnSecondary";
 
 const Banner = () => {
-    return (
-        <div className="relative bg-linear-to-br from-[#FFE6FD] to-[#E0F8F5] w-full h-[450px] md:h-[500px] lg:h-[550px] ">
+  return (
+    <div className="relative bg-linear-to-br from-[#FFE6FD] to-[#E0F8F5] w-full h-[450px] md:h-[500px] lg:h-[550px] ">
       <img
         className="absolute left-0 top-0 hidden md:inline-block"
         src={leftbg}
@@ -57,14 +57,19 @@ const Banner = () => {
         </div>
 
         <div className="flex flex-col md:flex-row gap-3 ">
-          <BtnPrimary className={"py-6"}>Watch All Products</BtnPrimary>
-          <BtnSecondary className={"bg-transparent py-6"}>
+          <BtnPrimary to={"/all-products"} className={"py-6"}>
+            Watch All Products
+          </BtnPrimary>
+          <BtnSecondary
+            to={"/create-product"}
+            className={"bg-transparent py-6"}
+          >
             Post an Product
           </BtnSecondary>
         </div>
       </div>
     </div>
-    );
+  );
 };
 
 export default Banner;
