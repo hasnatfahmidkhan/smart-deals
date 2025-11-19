@@ -1,16 +1,114 @@
-# React + Vite
+# 🍽️ SMARTDEALS — Deal your Products in a Smart way !
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Live Site:** https://smart-deals-app.web.app/  
+**Backend API:** https://smart-deals-api-server-phi.vercel.app 
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📝 Overview  
+Smart Deals is a community-driven online marketplace where users can post products for sale, place bids, negotiate prices, and manage item status by marking them as sold or pending.
 
-## React Compiler
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🚀 Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- 🛒 **Post Products for Sale**  
+  Users can list items with images, price, category, and details.
+
+- 💰 **Real-Time Bidding System**  
+  Buyers can place bids and negotiate prices directly on product pages.
+
+- 🔄 **Price Negotiation Workflow**  
+  Sellers can accept, reject, or counter bids for smooth negotiation.
+
+- 📌 **Item Status Management**  
+  Sellers can mark products as **Sold**, **Pending**, or **Available**.
+
+- 📱 **Fully Responsive UI**  
+  Optimized for mobile, tablet, and desktop.
+
+- ⚡ **Fast & Modern Interface**  
+  Built with React, Tailwind, and smooth interactive components.
+
+
+
+---
+
+## 🧩 Tech Stack
+
+### **Frontend**
+- React 19  
+- React Router    
+- Firebase  
+- Tailwind CSS   
+
+### **Backend**
+- Node.js  
+- Express.js  
+- MongoDB  
+
+---
+
+## ⚙ Installation 
+Clone the repo and install dependencies:
+
+```bash
+git clone https://github.com/hasnatfahmidkhan/smart-deals/
+npm install
+```
+
+Set up environment variables by creating a `.env` file in the root directory:
+
+```env
+VITE_APIKEY=your_api_key
+VITE_AUTHDOMAIN=your_auth_domain
+VITE_PROJECTID=your_project_id
+VITE_STORAGEBUCKET=your_storage_bucket
+VITE_MESSAGINGSENDERID=your_sender_id
+VITE_APPID=your_app_id
+```
+---
+4. Start the development server:
+
+```
+npm run dev
+```
+---
+5. Open your browser and navigate to `http://localhost:5173` to view the application.
+---
+
+## 📦 Dependencies
+```
+"dependencies": {
+    "date-fns": "^4.1.0",
+    "firebase": "^12.5.0",
+    "lucide": "^0.548.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-hot-toast": "^2.6.0",
+    "react-icons": "^5.5.0",
+    "sweetalert2": "^11.26.3"
+  }
+  
+```
+
+## 📦 **Dependencies**
+```
+  "devDependencies": {
+    "@eslint/js": "^9.36.0",
+    "@tailwindcss/vite": "^4.1.16",
+    "@types/react": "^19.1.16",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.4",
+    "axios": "^1.13.1",
+    "daisyui": "^5.3.10",
+    "eslint": "^9.36.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.22",
+    "globals": "^16.4.0",
+    "react-router": "^7.9.5",
+    "tailwindcss": "^4.1.16",
+    "vite": "^7.1.7"
+  }
+```
