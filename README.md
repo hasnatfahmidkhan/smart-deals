@@ -49,35 +49,6 @@ Smart Deals is a community-driven online marketplace where users can post produc
 - MongoDB  
 
 ---
-
-## ⚙ Installation 
-Clone the repo and install dependencies:
-
-```bash
-git clone https://github.com/hasnatfahmidkhan/smart-deals/
-npm install
-```
-
-Set up environment variables by creating a `.env` file in the root directory:
-
-```env
-VITE_APIKEY=your_api_key
-VITE_AUTHDOMAIN=your_auth_domain
-VITE_PROJECTID=your_project_id
-VITE_STORAGEBUCKET=your_storage_bucket
-VITE_MESSAGINGSENDERID=your_sender_id
-VITE_APPID=your_app_id
-```
----
-4. Start the development server:
-
-```
-npm run dev
-```
----
-5. Open your browser and navigate to `http://localhost:5173` to view the application.
----
-
 ## 📦 Dependencies
 ```
 "dependencies": {
@@ -112,3 +83,32 @@ npm run dev
     "vite": "^7.1.7"
   }
 ```
+---
+
+## ⚙ Installation 
+Clone the repo and install dependencies:
+
+```bash
+git clone https://github.com/hasnatfahmidkhan/smart-deals/
+npm install
+```
+
+Set up environment variables by creating a `.env` file in the root directory:
+
+```env
+VITE_APIKEY=your_api_key
+VITE_AUTHDOMAIN=your_auth_domain
+VITE_PROJECTID=your_project_id
+VITE_STORAGEBUCKET=your_storage_bucket
+VITE_MESSAGINGSENDERID=your_sender_id
+VITE_APPID=your_app_id
+```
+---
+4. Start the development server:
+
+```
+npm run dev
+```
+---
+5. Open your browser and navigate to `http://localhost:5173` to view the application.
+---
